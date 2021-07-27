@@ -14,7 +14,9 @@ class RegisterForm(FlaskForm):
             )
 
     def validate_email_address(self, email_address_to_check):
-        email_address = User.query.filter_by(email_address=email_address_to_check.data)
+        email_address = User.query.filter_by(
+            email_address=email_address_to_check.data
+        ).first()
 
         if email_address:
             raise ValidationError(
@@ -34,3 +36,9 @@ class RegisterForm(FlaskForm):
         label="Confirm Password", validators=[EqualTo("password1"), DataRequired()]
     )
     submit = SubmitField(label="Create Account")
+
+
+class LoginForm(FlaskForm):
+    username = StringField(label="User Name:", validators=[DataRequired()])
+    password = PasswordField(label="Password:", validators=[DataRequired()])
+    submit = SubmitField(label="Sign In")
